@@ -5,6 +5,7 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  fill:#EF5B0C;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -14,7 +15,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #131699;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,6 +23,27 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+   
+}
+
+.ButtonsHome {
+    background-color: #EF5B0C;
+    width: 70%;
+    height: 75px;
+    border: none;
+    margin-top: 20px;
+    z-index: 2;
+    border-radius: 24px;
+    color: white;
+}
+
+.LightTop{
+  width:650px;
+  height: 600px;
+  position:absolute;
+  z-index: 0;
+  top:-336px;
+  background: radial-gradient(80% 80% at 50.77%, #0CE1EF 0%,rgba(218,211,207,0) 50%);
 }
 
 .App-link {

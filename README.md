@@ -1,3 +1,37 @@
+SPRINTS:
+Sprint 01: Definição do projeto
+Sprint 02: Definição do Banco
+Sprint 03: Prototipo das telas
+Sprint 04: 
+  - [FRONT]: Iniciação do projeto e estruturas em React
+  - [BACK]: Iniciação do projeto e estruturas em Nest
+Sprint 05: 
+  - Implementação inicial do banco
+  - [FRONT]: Tela inicial Splash
+  - [BACK]: Conexão do banco com o projeto
+Sprint 06:
+  - [FRONT]: Tela do usuario (Cardapio)
+  - [BACK]:  Recursos de consulta do cardapio
+Sprint 07:
+  - [FRONT]: Tela do usuario (Carrinho)
+  - [BACK]:  Recursos de controle de compra com o banco
+Sprint 08:
+  - [FRONT]: Tela do adm (Login)
+  - [BACK]:  Recurso de autenticação do adm
+Sprint 09:
+  - [FRONT]: Tela do adm (Pagina inicial)
+  - [BACK]:  Recursos necessarios para a tela do adm
+Sprint 10:
+  - Geração de relatorios de vendas
+Sprint 11:
+  - Metodos de pagamento e geração de nota
+Sprint 12:
+  - Debitos técnicos
+Sprint 13: 
+  - Correção de bugs
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

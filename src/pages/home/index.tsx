@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../../logo.svg';
 
 function Home() {
@@ -9,7 +10,7 @@ function Home() {
             <div className='LightTop'> </div>
             <img src={logo} className='App-logo'/>
             <p>CARAVELAS</p>
-          <button className='ButtonsHome'>Pedido</button>
+          <Link to="/menu" className='Link'><button className='ButtonsHome'>Pedido</button></Link>
           <button className='ButtonsHome'>Chamar garçom</button>
         </header>
       </div>

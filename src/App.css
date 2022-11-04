@@ -15,7 +15,7 @@
 }
 
 .App-header {
-  background-color: #131699;
+  background-color: #313131;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -23,6 +23,11 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+   
+}
+
+.Link {
+  width: 100%;
    
 }
 
@@ -37,14 +42,6 @@
     color: white;
 }
 
-.LightTop{
-  width:650px;
-  height: 600px;
-  position:absolute;
-  z-index: 0;
-  top:-336px;
-  background: radial-gradient(80% 80% at 50.77%, #0CE1EF 0%,rgba(218,211,207,0) 50%);
-}
 
 .App-link {
   color: #61dafb;

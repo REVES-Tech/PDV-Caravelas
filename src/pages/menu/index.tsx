@@ -1,22 +1,37 @@
-import React,{ useEffect } from 'react';
-import logo from '../../logo.svg';
-import {getCardapio} from '../../scripts/firestoreScripts'
+import React,{ useEffect,useState } from 'react';
+import axios from 'axios';
+import { textSpanEnd } from 'typescript';
+//import {getCardapio} from '../../scripts/firestoreScripts'
 
+
+const baseURL = "http://localhost:3000/Cardapio";
 function  Menu() {
-    useEffect(() => {
-        console.log(getCardapio);
-      });
-    console.log(getCardapio());
+  const [post, setPost] = useState<any>([]);
+  const [item, setItem] = useState<any>([]);
+
+  useEffect(() => {
+    axios.get(baseURL,{headers: {                  
+      "Access-Control-Allow-Origin": "http://localhost:3000"}}).then((response) => {
+      setPost(response.data);
+    });
+  }, []);
+  
     return (
       <div className="App">
-        <header className="App-header">
-
-            <div className='LightTop'> </div>
-            <img src={logo} className='App-logo'/>
-            <p>CARAVELAAAAAAS</p>
-          <button className='ButtonsHome'>Peddwaido</button>
-          <button className='ButtonsHome'>Chamar dwagarçom</button>
-        </header>
+        {post?.map((post: any) => {
+          return(
+          <div>
+            <div className='Categoria'>
+              <div className='titulo'>{post.id}</div>
+              <div className='listaProdutos'>
+              <div className='produto'>{Object.keys(post)}
+              
+              </div>
+              </div>
+            </div>
+          </div>
+          )
+        })}
       </div>
     );
   }

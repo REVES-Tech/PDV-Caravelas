@@ -16,8 +16,8 @@ const customStyles = {
 
 //import {getCardapio} from '../../scripts/firestoreScripts'
 
-const baseURL = "http://localhost:3000/Cardapio";
-const URLpost = "http://localhost:3000/mesa";
+const baseURL = "https://nest-pdv-production.up.railway.app/Cardapio";
+const URLpost = "https://nest-pdv-production.up.railway.app/mesa";
 function Menu() {
   const [post, setPost] = useState<any>([]);
 

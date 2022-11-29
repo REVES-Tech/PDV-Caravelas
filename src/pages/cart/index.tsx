@@ -14,8 +14,8 @@ const customStyles = {
   },
 };
 
-const baseURL = "https://nest-pdv-production.up.railway.app/mesa/carrinho";
-const URLbase = "https://nest-pdv-production.up.railway.app/payment"
+const baseURL = "http://localhost:3000/mesa/carrinho";
+const URLbase = "http://localhost:3000/payment"
 function Cart() {
   const [post, setPost] = useState<any>([]);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);

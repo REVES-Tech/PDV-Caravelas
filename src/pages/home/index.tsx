@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../logo.svg';
+import logo from "../../logo.svg";
 
 function Home() {
     return (
@@ -8,7 +8,7 @@ function Home() {
         <header className="App-header">
 
             <div className='LightTop'> </div>
-            <img src={logo} className='App-logo'/>
+            <img src={logo} className='App-logo' alt=""/>
             <p>CARAVELAS</p>
           <Link to="/menu" className='Link'><button className='ButtonsHome'>Pedido</button></Link>
           <button className='ButtonsHome'>Chamar garçom</button>

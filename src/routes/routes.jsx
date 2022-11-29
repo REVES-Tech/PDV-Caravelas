@@ -3,6 +3,7 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 
 import Home from "../pages/home";
 import Menu from "../pages/menu";
+import Cart from "../pages/cart";
 
 
 const RoutesPath = () => {
@@ -14,6 +15,7 @@ const RoutesPath = () => {
       <Routes>
         <Route element={<Home></Home>} path="/" exact />
         <Route element={<Menu></Menu>} path="/menu" />
+        <Route element={<Cart></Cart>} path="/carrinho" />
       </Routes>
       </div>
       <div className="FooterRoute">

@@ -1,12 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-//import {getCardapio} from '../../scripts/firestoreScripts'
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 const baseURL = "http://localhost:3000/mesa/carrinho";
+const URLbase = "http://localhost:3000/payment"
 function Cart() {
   const [post, setPost] = useState<any>([]);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [flag,setFlag] = useState<boolean>(false);
+  const [total,setTotal] = useState<any>("");
+  const [qrCode,setQrCode] = useState<any>("");
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {}
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     axios
@@ -19,6 +44,7 @@ function Cart() {
         console.log(response.data)
         setPost(response.data);
         setFlag(false);
+        setTotal(response.data.slice(-1));
       });
   }, [flag]);
 
@@ -26,14 +52,22 @@ function Cart() {
     axios.delete(baseURL, {headers: {
           "Access-Control-Allow-Origin": "http://localhost:3000",
         }
-  }).then((response) => {alert(response);setFlag(true)})}
+  }).then((response) => {setFlag(true)})}
 
   function fazUmPix(){
-    axios.get(baseURL, {headers: {
+    axios.post(`${URLbase}?valor=${total}`, {headers: {
           "Access-Control-Allow-Origin": "http://localhost:3000",
         }
-  }).then((response) => {alert(response);setFlag(true)})}
+  }).then((response) => {setQrCode(response.data);console.log(response.data);setIsOpen(true)},)}
 
+  function pixCode() {
+    return <div className="Modal">
+      <div className="ModalQr">
+        <img src={"data:image/gif;base64,"+qrCode[0]} className="myQrCode" alt=""></img>
+        <button className="ButtonsHome" onClick={() => {navigator.clipboard.writeText(qrCode[1]);alert("copiado!")}}>Copiar código</button>
+      </div>
+    </div>;
+  }
 
   return (
     <div className="App">
@@ -48,11 +82,17 @@ function Cart() {
           <div>
             <div className="Categoria">
             <div className="titulo">Carrinho</div>
+            <Modal
+                isOpen={modalIsOpen}
+                onAfterOpen={afterOpenModal}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentElement={pixCode}
+                shouldCloseOnOverlayClick={true}
+              ></Modal>
               <div className="listaProdutos">
                   {post?.map((item: any) => {
-                    console.log(post);
                     var valorCor = parseFloat(item.valor).toFixed(2);
-                    console.log("")
                     return (
                         <div className="produto">
                         <div className="infoProd">
@@ -64,7 +104,7 @@ function Cart() {
                         </div>
                     );
                   })}
-                  <button className='ButtonsHome'>Efetuar Pagamento</button>
+                  <button className='ButtonsHome' onClick={fazUmPix}>Efetuar Pagamento</button>
                   <button className='ButtonsHome' onClick={limpaCarrinho}>Limpar carrinho</button>
               </div>
             </div>

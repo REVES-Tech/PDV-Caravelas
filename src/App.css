@@ -158,6 +158,7 @@ html{
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  flex-direction: column;
 }
 .valorTotal{
   font-size: xx-large;
@@ -165,8 +166,10 @@ html{
   font-weight: bolder;
 }
 .qtd{
-  height: 200px;
-  z-index: 80;
+  height: 30px;
+  border: none;
+  background-color: #CCC;
+  border-radius: 15px;
 }
 .ModalQr{
   display: flex;

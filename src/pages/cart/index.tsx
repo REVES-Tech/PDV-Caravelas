@@ -14,7 +14,7 @@ const customStyles = {
   },
 };
 
-const baseURL = "http://localhost:3000/mesa/carrinho";
+const baseURL = "http://localhost:8080/mesa/carrinho";
 const URLbase = "http://localhost:3000/payment"
 function Cart() {
   const [post, setPost] = useState<any>([]);
@@ -38,19 +38,24 @@ function Cart() {
       .get(baseURL, {
         headers: {
           "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Authorization": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2",
         },
       })
       .then((response) => {
-        console.log(response.data)
-        setPost(response.data);
+        const teste = Object.keys(response.data).map((key:string)=> {
+          return  {name:key,elements:response.data[key]};
+        });
+        
+        setPost(response.data.produtos);
+        setTotal(response.data.valorTotal)
         setFlag(false);
-        setTotal(response.data.slice(-1));
       });
   }, [flag]);
 
   function limpaCarrinho(){
     axios.delete(baseURL, {headers: {
           "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Authorization": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2"
         }
   }).then((response) => {setFlag(true)})}
 
@@ -68,6 +73,13 @@ function Cart() {
       </div>
     </div>;
   }
+  function deleteItem(id:number){
+    console.log(`${baseURL}/${id}`)
+    axios.delete(`${baseURL}/${id}`, {headers: {
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Authorization": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2"
+    }
+}).then((response) => {setFlag(true)})}
 
   return (
     <div className="App">
@@ -87,6 +99,7 @@ function Cart() {
                 onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 style={customStyles}
+                ariaHideApp={false}
                 contentElement={pixCode}
                 shouldCloseOnOverlayClick={true}
               ></Modal>
@@ -97,13 +110,14 @@ function Cart() {
                         <div className="produto">
                         <div className="infoProd">
                           <div className="prodName">{item?.nome}</div>
-                          <div className="prodObs">{item?.quantidade}</div>
-                          {item.valor?<div className="prodPrice">R${valorCor}</div>: null}
-                          {item.valorTotal ? <div className="valorTotal">Valor Total: R${item.valorTotal}</div> : null}
+                          {item?.observacoes?<div className="prodObs">{item?.observacoes}</div>:null}
+                          {item?.precoQuantidade?<div className="prodPrice">R${item?.precoQuantidade}</div>: null}
+                          <button className="ButtonsHome" onClick={() => deleteItem(item?.mesaProdutoId)}></button>
                         </div>
                         </div>
                     );
                   })}
+                  {total ? <div className="valorTotal">Valor Total: R${total}</div> : null}
                   <button className='ButtonsHome' onClick={fazUmPix}>Efetuar Pagamento</button>
                   <button className='ButtonsHome' onClick={limpaCarrinho}>Limpar carrinho</button>
               </div>

@@ -16,17 +16,18 @@ const customStyles = {
 
 //import {getCardapio} from '../../scripts/firestoreScripts'
 
-const baseURL = "http://localhost:3000/Cardapio";
-const URLpost = "http://localhost:3000/mesa";
+const baseURL = "http://localhost:8080/cardapio";
+const URLpost = "http://localhost:8080/mesa/carrinho";
 function Menu() {
   const [post, setPost] = useState<any>([]);
 
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [teste, setTeste] = useState<any>("");
-  const [categoria,setCategoria] = useState<any>("");
-  const [qtd, setQtd] = useState<any>("");
+  const [itemId,setItemId] = useState<any>("");
+  const [qtd, setQtd] = useState<number>(0);
 
-  function openModal() {
+  function openModal(id:number) {
+    setItemId(id);
     setIsOpen(true);
   }
 
@@ -38,14 +39,12 @@ function Menu() {
 
   function handleChange(event:any) {
     setQtd(event.target.value);
-    console.log(event.target.value)
-    console.log("qtd = "+qtd)
   }
   function handleSubmit(event:any) {
     event.preventDefault();
-    const {nome} = teste;
-    addCart(nome,qtd,categoria)
+    addCart(qtd)
   }
+
 
   function tesda() {
     const { nome, foto, price, obs} = teste;
@@ -82,13 +81,22 @@ function Menu() {
         },
       })
       .then((response) => {
-        setPost(response.data);
+        const teste = Object.keys(response.data).map((key:string)=> {
+          return  {name:key,elements:response.data[key]};
+        });
+        setPost(teste);
       });
   }, []);
 
-  function addCart(nome:any,quantidade:any,cate:any) {
-    console.log(nome,qtd,categoria)
-    axios.post(`${URLpost}?nome=${nome}&quantidade=${quantidade}&tipoProduto=${cate}`,{headers: {"Access-Control-Allow-Origin": "http://localhost:3000",},})
+  function addCart(quantidade:any) {
+    axios.post(URLpost,{
+      "token": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2",
+      "produtoId": itemId,
+      "quantidade": quantidade
+    },{headers: {
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+    }}).then(function (response) {
+    })
 
   }
 
@@ -104,32 +112,32 @@ function Menu() {
         return (
           <div>
             <div className="Categoria">
-              <div className="titulo">{post.id}</div>
+              <div className="titulo">{post.name}</div>
               <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
                 onRequestClose={closeModal}
                 style={customStyles}
                 contentElement={tesda}
+                ariaHideApp={false}
                 shouldCloseOnOverlayClick={false}
               ></Modal>
               <div className="listaProdutos">
-                {post?.Itens?.map((item: any) => {
+                {post?.elements?.map((item: any) => {
                   return (
                     <>
                       <div
                         className="produto"
                         onClick={() => {
-                          openModal();
                           setTeste(item);
-                          setCategoria(post.id);
+                          openModal(item.id);
                         }}
                       >
                         <img src={item.foto} className="foto" alt=""></img>
                         <div className="infoProd">
                           <div className="prodName">{item.nome}</div>
-                          <div className="prodObs">{item.obs}</div>
-                          <div className="prodPrice">R${item.price}</div>
+                          <div className="prodObs">{item.observacoes}</div>
+                          <div className="prodPrice">R${item.preco}</div>
                         </div>
                       </div>
                     </>

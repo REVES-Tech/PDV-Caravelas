@@ -4,6 +4,7 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Home from "../pages/home";
 import Menu from "../pages/menu";
 import Cart from "../pages/cart";
+import Manager from "../pages/manager";
 
 
 const RoutesPath = () => {
@@ -16,6 +17,7 @@ const RoutesPath = () => {
         <Route element={<Home></Home>} path="/" exact />
         <Route element={<Menu></Menu>} path="/menu" />
         <Route element={<Cart></Cart>} path="/carrinho" />
+        <Route element={<Manager></Manager>} path="/manager" />
       </Routes>
       </div>
       <div className="FooterRoute">

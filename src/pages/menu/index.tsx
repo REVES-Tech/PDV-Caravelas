@@ -18,6 +18,7 @@ const customStyles = {
 
 const baseURL = "http://localhost:8080/cardapio";
 const URLpost = "http://localhost:8080/mesa/carrinho";
+const baseToken = "http://localhost:8080/mesa?chave=mesa1"
 function Menu() {
   const [post, setPost] = useState<any>([]);
 
@@ -25,6 +26,21 @@ function Menu() {
   const [teste, setTeste] = useState<any>("");
   const [itemId,setItemId] = useState<any>("");
   const [qtd, setQtd] = useState<number>(0);
+
+  function tableToken(){
+    axios.post(baseToken, {
+      headers: {
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+      },
+    }).then((response) => {
+      var data = response.data.split(" ").splice(-1);
+      localStorage.setItem("mesaValueKey",data.toString());
+    });
+}
+
+  useEffect(() => {
+    tableToken();
+  }, [])
 
   function openModal(id:number) {
     setItemId(id);
@@ -90,7 +106,7 @@ function Menu() {
 
   function addCart(quantidade:any) {
     axios.post(URLpost,{
-      "token": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2",
+      "token": localStorage.getItem("mesaValueKey"),
       "produtoId": itemId,
       "quantidade": quantidade
     },{headers: {

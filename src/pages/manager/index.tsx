@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+import { useAuthContext } from '../../context/AuthContextProvider';
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { InputContainer,FormContainer,SendButton } from "./styles";
 
 const customStyles = {
   content: {
@@ -23,7 +25,8 @@ function Menu() {
   const [price, setPrice] = useState<number>(0);
   const [photo, setPhoto] = useState<string>("");
   const [obs, setObs] = useState<string>("");
-  const [tipo, setTipo] = useState<string>("");
+  const [tipo, setTipo] = useState<string>("BEBIDA");
+  const { isAuthenticated, setAuthenticated } = useAuthContext();
 
 
 
@@ -50,7 +53,7 @@ function Menu() {
   }
 
   function addCart(price:number,photo:string,name:string,obs:string,tipo:string) {
-    console.log(tipo + name+ obs+price+photo)
+
     axios.post(URLpost,{
       "tipoProduto": tipo,
       "nome": name,
@@ -59,6 +62,7 @@ function Menu() {
       "foto": photo
     },{headers: {
       "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Authorization": localStorage.getItem("parentValueKey"),
     }}).then(function (response) {
     })
 
@@ -66,9 +70,9 @@ function Menu() {
 
   return (
     <div className="App">
-      <Link to="/carrinho" className="Link">
+      <Link to="/manager" className="Link">
         <button className="ButtonCart"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
 </svg>
 </button>
       </Link>
@@ -78,16 +82,18 @@ function Menu() {
               <div className="listaProdutos">
                         <div className="infoProd">
                         <form onSubmit={handleSubmit}>
-                        <label>Name:</label><input className="qtd" onChange={handleChangeName}></input>
-                          <label>Obs:</label><input className="qtd" onChange={handleChangeObs}></input>
-                          <label>Price:</label><input className="qtd" onChange={handleChangePrice}></input>
-                          <label>Photo:</label><input className="qtd" onChange={handleChangePhoto}></input>
+                          <FormContainer>
+                        <InputContainer><label>Name:</label><input className="qtd" onChange={handleChangeName}></input></InputContainer>
+                          <InputContainer><label>Obs:</label><input className="qtd" onChange={handleChangeObs}></input></InputContainer>
+                          <InputContainer><label>Price:</label><input className="qtd" onChange={handleChangePrice}></input></InputContainer>
+                          <InputContainer><label>Photo:</label><input className="qtd" onChange={handleChangePhoto}></input></InputContainer>
                           <select onChange={handleChangeTipo}>
                           <option value="BEBIDA">Bebidas</option>
                            <option value="LANCHE">Lanche</option>
                             <option value="PORCAO">Porção</option>
                             </select>
-                          <button onClick={handleSubmit}>MANDAR</button>
+                          <SendButton onClick={handleSubmit}>MANDAR</SendButton>
+                          </FormContainer>
                           </form>
                         </div>
                       </div>

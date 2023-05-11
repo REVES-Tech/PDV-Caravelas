@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
+import { DeleteButton,TrashIcon } from "./styles";
+import QRCode from "react-qr-code";
 
 const customStyles = {
   content: {
@@ -15,7 +17,7 @@ const customStyles = {
 };
 
 const baseURL = "http://localhost:8080/mesa/carrinho";
-const URLbase = "http://localhost:3000/payment"
+const URLbase = "http://localhost:8080/payment"
 function Cart() {
   const [post, setPost] = useState<any>([]);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
@@ -38,7 +40,7 @@ function Cart() {
       .get(baseURL, {
         headers: {
           "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Authorization": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2",
+          "Authorization": localStorage.getItem("mesaValueKey"),
         },
       })
       .then((response) => {
@@ -55,29 +57,37 @@ function Cart() {
   function limpaCarrinho(){
     axios.delete(baseURL, {headers: {
           "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Authorization": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2"
+          "Authorization": localStorage.getItem("mesaValueKey")
         }
   }).then((response) => {setFlag(true)})}
 
-  function fazUmPix(){
-    axios.post(`${URLbase}?valor=${total}`, {headers: {
+  function deleteTable(){
+     axios.delete("http://localhost:8080/mesa",{headers: {
           "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Authorization": localStorage.getItem("mesaValueKey")
+     }}).then((response) => {window.location.reload();localStorage.setItem("mesaValueKey","");})
+  }
+
+  function fazUmPix(){
+
+    axios.post(`${URLbase}?valor=${total}`,null, {headers: {
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Authorization": localStorage.getItem("mesaValueKey")
         }
-  }).then((response) => {setQrCode(response.data);console.log(response.data);setIsOpen(true)},)}
+  }).then((response) => {setQrCode(response.data);setIsOpen(true)},)}
 
   function pixCode() {
     return <div className="Modal">
       <div className="ModalQr">
-        <img src={"data:image/gif;base64,"+qrCode[0]} className="myQrCode" alt=""></img>
-        <button className="ButtonsHome" onClick={() => {navigator.clipboard.writeText(qrCode[1]);alert("copiado!")}}>Copiar código</button>
+        <QRCode size={300} value={qrCode} />
+        <button className="ButtonsHome" onClick={() => {navigator.clipboard.writeText("teste");alert("copiado!");deleteTable()}}>Copiar código</button>
       </div>
     </div>;
   }
   function deleteItem(id:number){
-    console.log(`${baseURL}/${id}`)
     axios.delete(`${baseURL}/${id}`, {headers: {
       "Access-Control-Allow-Origin": "http://localhost:3000",
-      "Authorization": "$2a$10$xCIhMLLwy9TKplZ6ANsft.pjgYE8XXSoFC4WKI5B5N0O9e8keKtQ2"
+      "Authorization": localStorage.getItem("mesaValueKey")
     }
 }).then((response) => {setFlag(true)})}
 
@@ -112,7 +122,7 @@ function Cart() {
                           <div className="prodName">{item?.nome}</div>
                           {item?.observacoes?<div className="prodObs">{item?.observacoes}</div>:null}
                           {item?.precoQuantidade?<div className="prodPrice">R${item?.precoQuantidade}</div>: null}
-                          <button className="ButtonsHome" onClick={() => deleteItem(item?.mesaProdutoId)}></button>
+                          <DeleteButton className="ButtonsHome" onClick={() => deleteItem(item?.mesaProdutoId)}><TrashIcon /></DeleteButton>
                         </div>
                         </div>
                     );

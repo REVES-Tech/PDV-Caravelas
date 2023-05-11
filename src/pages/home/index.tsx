@@ -11,7 +11,7 @@ function Home() {
             <img src={logo} className='App-logo' alt=""/>
             <p>CARAVELAS</p>
           <Link to="/menu" className='Link'><button className='ButtonsHome'>Pedido</button></Link>
-          <button className='ButtonsHome'>Chamar garçom</button>
+          <Link to="/login" className='Link'><button className='ButtonsHome'>Gerenciar</button></Link>
         </header>
       </div>
     );

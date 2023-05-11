@@ -37,6 +37,17 @@
   top: 10px;
   right: 10px;
   border-radius: 100%;
+}
+.ButtonCart2{
+  position: inherit;
+  border: none;
+  width: 40px;
+  height: 40px;
+  background-color: #EF5B0C;
+  color: #fff;
+  top: 10px;
+  right: 10px;
+  border-radius: 100%;
 
 }
 .Link {
